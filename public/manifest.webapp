@@ -1,0 +1,23 @@
+{
+  "version": "1.0.0",
+  "name": "Reddonly",
+  "description": "Reddit, but read only",
+  "type": "web",
+  "launch_path": "/index.html",
+  "icons": {
+    "56": "/assets/icons/kaios_56.png",
+    "112": "/assets/icons/kaios_112.png"
+  },
+  "developer": {
+    "name": "Hassan AZI",
+    "url": "https://www.pingfrommorocco.com"
+  },
+  "locales": {
+    "en-US": {
+      "name": "Reddit, but read only",
+      "subtitle": "Reddit, but read only",
+      "description": "Reddit, but read only"
+    }
+  },
+  "default_locale": "en-US"
+}
