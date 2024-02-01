@@ -1,4 +1,4 @@
-export interface Thread {
+export interface IThread {
   kind: string;
   data: {
     id: string;

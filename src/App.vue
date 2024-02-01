@@ -1,8 +1,14 @@
 <script setup lang="ts"></script>
 
 <template>
-  <p>Hello World</p>
-  <RouterView />
+  <main>
+    <p>Reddonly</p>
+    <RouterView />
+  </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+main {
+  width: 320px;
+}
+</style>

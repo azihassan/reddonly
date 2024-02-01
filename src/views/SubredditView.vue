@@ -3,14 +3,15 @@ import Subreddit from "@/components/Subreddit.vue";
 
 import type { PaginatedResponse } from "@/types";
 import { useFetch } from "@/composables";
-import type { Thread } from "./Thread";
+import type { IThread } from "./IThread";
 
 const props = defineProps<{
   subreddit: string;
 }>();
 
-const { data, isLoading, error } = useFetch<PaginatedResponse<Thread>>(
+const { data, isLoading, error } = useFetch<PaginatedResponse<IThread>>(
   `https://www.reddit.com/r/${props.subreddit}/top.json?t=week`
+  // `http://127.0.0.1:5555/`
 );
 </script>
 
