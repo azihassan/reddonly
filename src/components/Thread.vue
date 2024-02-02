@@ -22,8 +22,8 @@ function htmlDecode(input: string): string {
         <p>{{ thread.data.ups - thread.data.downs }} points</p>
       </div>
       <div class="toggle-button" @click="isOpen = !isOpen">
-        <template v-if="isOpen">-</template>
-        <template v-if="!isOpen">+</template>
+        <a v-if="isOpen">-</a>
+        <a v-if="!isOpen">+</a>
       </div>
     </div>
     <div
