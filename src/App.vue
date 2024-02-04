@@ -1,5 +1,27 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import Navigation from "./Navigation";
+
+onMounted(() => {
+  Navigation.init();
+  document.addEventListener("keydown", (e) => {
+    switch (e.key) {
+      case "ArrowLeft":
+        e.preventDefault();
+        Navigation.Previous();
+        break;
+      case "ArrowRight":
+        e.preventDefault();
+        Navigation.Next();
+        break;
+      case "Enter":
+        Navigation.Press();
+        break;
+      default:
+        break;
+    }
+  });
+});
 
 const navigationTarget = ref<string>("");
 </script>
@@ -8,8 +30,14 @@ const navigationTarget = ref<string>("");
   <main>
     <p>Reddonly</p>
     <form @submit.prevent="$router.push(`/r/${navigationTarget}`)">
-      <input type="text" v-model="navigationTarget" />
-      <button v-if="navigationTarget !== ''" type="submit">Go</button>
+      <input type="text" v-model="navigationTarget" :nav-selectable="true" />
+      <button
+        v-if="navigationTarget !== ''"
+        type="submit"
+        :nav-selectable="true"
+      >
+        Go
+      </button>
     </form>
     <RouterView />
   </main>
@@ -17,6 +45,6 @@ const navigationTarget = ref<string>("");
 
 <style scoped>
 main {
-  width: 320px;
+  max-width: 240px;
 }
 </style>

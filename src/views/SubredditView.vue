@@ -19,16 +19,17 @@ const listingPeriod = ref<ThreadListingPeriod>("week");
 
 const url = computed(
   () =>
-    `http://127.0.0.1:5555/?subreddit=${props.subreddit}&listingType=${listingType.value}` +
+    // `http://127.0.0.1:5555/?subreddit=${props.subreddit}&listingType=${listingType.value}` +
+    // (["top", "controversial"].includes(listingType.value)
+    //   ? `&listingPeriod=${listingPeriod.value}`
+    //   : "")
+    `https://www.reddit.com/r/${props.subreddit}/${listingType.value}.json` +
     (["top", "controversial"].includes(listingType.value)
-      ? `&listingPeriod=${listingPeriod.value}`
+      ? `?t=${listingPeriod.value}`
       : "")
-  // `https://www.reddit.com/r/${props.subreddit}/${listingType.value}.json` +
-  // (["top", "controversial"].includes(listingType.value)
-  //   ? `?t=${listingPeriod.value}`
-  //   : "")
 );
-const { data, isLoading, error } = useFetch<PaginatedResponse<IThread>>(url);
+const { data, isLoading, error, refetch } =
+  useFetch<PaginatedResponse<IThread>>(url);
 </script>
 
 <template>
@@ -36,9 +37,12 @@ const { data, isLoading, error } = useFetch<PaginatedResponse<IThread>>(url);
   <nav>
     <ul class="listing-types">
       <li v-for="t in threadListingTypes">
-        <a @click="listingType = t" :class="{ selected: t === listingType }">{{
-          t
-        }}</a>
+        <a
+          :nav-selectable="true"
+          @click="listingType = t"
+          :class="{ selected: t === listingType }"
+          >{{ t }}</a
+        >
       </li>
     </ul>
     <ul
@@ -47,6 +51,7 @@ const { data, isLoading, error } = useFetch<PaginatedResponse<IThread>>(url);
     >
       <li v-for="p in threadListingPeriods">
         <a
+          :nav-selectable="true"
           @click="listingPeriod = p"
           :class="{ selected: p === listingPeriod }"
           >{{ p }}</a
@@ -59,6 +64,7 @@ const { data, isLoading, error } = useFetch<PaginatedResponse<IThread>>(url);
   </div>
   <div v-if="error">
     <p>An error occurred : {{ error }}</p>
+    <button @click="refetch" :nav-selectable="true">Retry</button>
   </div>
   <main v-if="data !== undefined">
     <Subreddit :threads="data.data.children" />
@@ -72,6 +78,7 @@ nav ul {
   list-style: none;
   padding: 0;
   justify-content: center;
+  font-size: 12px;
 }
 
 nav ul li + li:before {
@@ -88,4 +95,9 @@ a {
 .selected::after {
   content: "]";
 }
+
+/* *[nav-selected="true"] {
+  background-image: linear-gradient(255deg, #9b27af, #9b27af);
+  color: #fff;
+} */
 </style>

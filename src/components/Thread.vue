@@ -21,7 +21,11 @@ function htmlDecode(input: string): string {
       <div class="metadata">
         <p>{{ thread.data.ups - thread.data.downs }} points</p>
       </div>
-      <div class="toggle-button" @click="isOpen = !isOpen">
+      <div
+        class="toggle-button"
+        @click="isOpen = !isOpen"
+        :nav-selectable="true"
+      >
         <a v-if="isOpen">-</a>
         <a v-if="!isOpen">+</a>
       </div>
