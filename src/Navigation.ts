@@ -34,6 +34,12 @@ const selectElement = (selectElement: HTMLElement) => {
     if (element.nodeName === "INPUT") {
       selectThisElement ? element.focus() : element.blur();
     }
+    if (selectThisElement) {
+      element.scrollIntoView(true);
+      if (window.innerHeight + window.scrollY < document.body.offsetHeight) {
+        window.scrollBy(0, -100);
+      }
+    }
   });
 };
 

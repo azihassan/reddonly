@@ -16,20 +16,55 @@ type ThreadListingType = (typeof threadListingTypes)[number];
 type ThreadListingPeriod = (typeof threadListingPeriods)[number];
 const listingType = ref<ThreadListingType>("hot");
 const listingPeriod = ref<ThreadListingPeriod>("week");
+const before = ref<string>("");
+const after = ref<string>("");
 
-const url = computed(
-  () =>
-    // `http://127.0.0.1:5555/?subreddit=${props.subreddit}&listingType=${listingType.value}` +
-    // (["top", "controversial"].includes(listingType.value)
-    //   ? `&listingPeriod=${listingPeriod.value}`
-    //   : "")
-    `https://www.reddit.com/r/${props.subreddit}/${listingType.value}.json` +
-    (["top", "controversial"].includes(listingType.value)
-      ? `?t=${listingPeriod.value}`
-      : "")
-);
+// const url = computed(() => {
+//   let result = `http://127.0.0.1:5555/`;
+//   let queryString = [
+//     `subreddit=${props.subreddit}`,
+//     `listingType=${listingType.value}`,
+//   ];
+//   if (["top", "controversial"].includes(listingType.value)) {
+//     queryString.push(`listingPeriod=${listingPeriod.value}`);
+//   }
+//   if (before.value) {
+//     queryString.push(`before=${before.value}`);
+//   }
+//   if (after.value) {
+//     queryString.push(`after=${after.value}`);
+//   }
+//   return result + "?" + queryString.join("&");
+// });
+
+const url = computed(() => {
+  let result = `https://www.reddit.com/r/${props.subreddit}/${listingType.value}.json`;
+  let queryString = [];
+  if (["top", "controversial"].includes(listingType.value)) {
+    queryString.push(`t=${listingPeriod.value}`);
+  }
+  if (before.value) {
+    queryString.push(`before=${before.value}`);
+  }
+  if (after.value) {
+    queryString.push(`after=${after.value}`);
+  }
+  return result + "?" + queryString.join("&");
+});
+
 const { data, isLoading, error, refetch } =
   useFetch<PaginatedResponse<IThread>>(url);
+
+function goBack() {
+  before.value = data.value?.data.after || "";
+  after.value = "";
+  console.log("back to ", url);
+}
+
+function goNext() {
+  before.value = "";
+  after.value = data.value?.data.after || "";
+}
 </script>
 
 <template>
@@ -69,6 +104,14 @@ const { data, isLoading, error, refetch } =
   <main v-if="data !== undefined">
     <Subreddit :threads="data.data.children" />
   </main>
+  <footer>
+    <nav>
+      <ul>
+        <li><a @click="goBack" :nav-selectable="true">Previous</a></li>
+        <li><a @click="goNext" :nav-selectable="true">Next</a></li>
+      </ul>
+    </nav>
+  </footer>
 </template>
 
 <style>
