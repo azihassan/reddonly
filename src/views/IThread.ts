@@ -12,5 +12,6 @@ export interface IThread {
     ups: number;
     downs: number;
     num_comments: number;
+    created_utc: number;
   };
 }

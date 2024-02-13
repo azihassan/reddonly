@@ -19,29 +19,14 @@ const listingPeriod = ref<ThreadListingPeriod>("week");
 const before = ref<string>("");
 const after = ref<string>("");
 
-// const url = computed(() => {
-//   let result = `http://127.0.0.1:5555/`;
-//   let queryString = [
-//     `subreddit=${props.subreddit}`,
-//     `listingType=${listingType.value}`,
-//   ];
-//   if (["top", "controversial"].includes(listingType.value)) {
-//     queryString.push(`listingPeriod=${listingPeriod.value}`);
-//   }
-//   if (before.value) {
-//     queryString.push(`before=${before.value}`);
-//   }
-//   if (after.value) {
-//     queryString.push(`after=${after.value}`);
-//   }
-//   return result + "?" + queryString.join("&");
-// });
-
 const url = computed(() => {
-  let result = `https://www.reddit.com/r/${props.subreddit}/${listingType.value}.json`;
-  let queryString = [];
+  let result = `http://127.0.0.1:5555/`;
+  let queryString = [
+    `subreddit=${props.subreddit}`,
+    `listingType=${listingType.value}`,
+  ];
   if (["top", "controversial"].includes(listingType.value)) {
-    queryString.push(`t=${listingPeriod.value}`);
+    queryString.push(`listingPeriod=${listingPeriod.value}`);
   }
   if (before.value) {
     queryString.push(`before=${before.value}`);
@@ -51,6 +36,21 @@ const url = computed(() => {
   }
   return result + "?" + queryString.join("&");
 });
+
+// const url = computed(() => {
+//   let result = `https://www.reddit.com/r/${props.subreddit}/${listingType.value}.json`;
+//   let queryString = [];
+//   if (["top", "controversial"].includes(listingType.value)) {
+//     queryString.push(`t=${listingPeriod.value}`);
+//   }
+//   if (before.value) {
+//     queryString.push(`before=${before.value}`);
+//   }
+//   if (after.value) {
+//     queryString.push(`after=${after.value}`);
+//   }
+//   return result + "?" + queryString.join("&");
+// });
 
 const { data, isLoading, error, refetch } =
   useFetch<PaginatedResponse<IThread>>(url);
@@ -138,9 +138,4 @@ a {
 .selected::after {
   content: "]";
 }
-
-/* *[nav-selected="true"] {
-  background-image: linear-gradient(255deg, #9b27af, #9b27af);
-  color: #fff;
-} */
 </style>

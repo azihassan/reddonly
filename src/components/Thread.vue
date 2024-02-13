@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { timeAgo } from "@/helpers";
 import type { IThread } from "@/views/IThread";
 import { ref } from "vue";
 
@@ -20,6 +21,7 @@ function htmlDecode(input: string): string {
       <div class="title">{{ thread.data.title }}</div>
       <div class="metadata">
         <p>{{ thread.data.ups - thread.data.downs }} points</p>
+        <p>{{ timeAgo(thread.data.created_utc) }}</p>
       </div>
       <div
         class="toggle-button"
