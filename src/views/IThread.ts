@@ -1,4 +1,4 @@
-export interface Thread {
+export interface IThread {
   kind: string;
   data: {
     id: string;
@@ -12,5 +12,6 @@ export interface Thread {
     ups: number;
     downs: number;
     num_comments: number;
+    created_utc: number;
   };
 }
